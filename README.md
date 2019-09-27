@@ -1,12 +1,12 @@
 # Coding BootCamp Project II ---------------------------
 
-# Description ------------------------------------------
+### Description 
 
 * Our project is a Discord - Bot
 * The purpose of our bot is to 
 * Our bot is unique in that 
 
-# Technologies Employed ---------------------------------
+### Technologies Employed 
 
 * Discord
 * Node
@@ -14,7 +14,7 @@
 *
 
 
-# Team: ------------------------------------------------
+### Team: 
 
 * Project Manager: Jason
 * Designer/Front End Developer: Isaac Johson
@@ -22,8 +22,9 @@
 * Back End Developer: Anthony
 * Back End Developer: Adam "Coop" Cooper
 
-# *
+### 
 
+*
 * 
 
 
