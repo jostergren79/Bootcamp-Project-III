@@ -16,10 +16,10 @@
 
 ### Team: 
 
-* Project Manager: Jason
-* Designer/Front End Developer: Isaac Johson
-* Front End Developer: Shawn
-* Back End Developer: Anthony
+* Project Manager: Jason Ostergren
+* Designer/Front End Developer: Isaac Johnson
+* Front End Developer: Shawn Wallin
+* Back End Developer: Anthony Dominguez
 * Back End Developer: Adam "Coop" Cooper
 
 ### 
