@@ -38,5 +38,6 @@ db.sequelize.sync(syncOptions).then(function() {
     );
   });
 });
+require("./discord.js");
 
 module.exports = app;
