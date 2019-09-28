@@ -55,7 +55,6 @@ module.exports = function(app) {
             User.avatarURL = userResponse.avatar
               ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024`
               : null;
-
             axios
               .get("https://discordapp.com/api/users/@me/guilds", {
                 headers: {
