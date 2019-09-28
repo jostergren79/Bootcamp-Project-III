@@ -35,18 +35,66 @@ module.exports = function(app) {
     data.append("redirect_uri", redirectURL);
     data.append("scope", scopes.join(" "));
     data.append("code", accessCode);
+    let User;
+    let authorization;
     axios
       .post("https://discordapp.com/api/oauth2/token", {
         body: data
       })
       .then(tokenResponse => {
+        authorization = `${tokenResponse.token_type} ${tokenResponse.access_token}`;
         axios
           .get("https://discordapp.com/api/users/@me", {
             headers: {
-              authorization: `${tokenResponse.token_type} ${tokenResponse.access_token}`
+              authorization
             }
           })
-          .then(userResopnse => {});
+          .then(userResponse => {
+            User = userResponse;
+            User.tag = `${userResponse.username}#${userResponse.discriminator}`;
+            User.avatarURL = userResponse.avatar
+              ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024`
+              : null;
+
+            axios
+              .get("https://discordapp.com/api/users/@me/guilds", {
+                headers: {
+                  authorization
+                }
+              })
+              .then(guildResponse => {
+                User.guilds = [];
+                User.guildsManage = [];
+                let count = [];
+                for (let i = 0; i < guildResponse.length; i++) {
+                  count.push(true);
+                  if (guildResponse[i].icon === null) {
+                    guildResponse[
+                      i
+                    ].iconURL = `https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png`;
+                  } else {
+                    guildResponse[
+                      i
+                    ].iconURL = `https://cdn.discordapp.com/icons/${guildResponse[i].id}/${guildResponse[i].icon}.jpg`;
+                  }
+                  let perm = (guildResponse[i].permissions & 0x8) !== 0;
+                  let manage = (guildResponse[i].permissions & 0x20) !== 0; // 0x20 = MANAGE_GUILD
+                  if (perm === true) {
+                    User.guilds.push(guildResponse[i]);
+                  } else if (manage === true) {
+                    User.guildsManage.push(guildResponse[i]);
+                  }
+                  if (i + 1 === guildResponse.length) {
+                    req.session.user = userResponse;
+                    res.redirect("/servers");
+                  }
+                }
+              });
+          });
       });
+  });
+
+  app.get("/servers", (req, res) => {
+    res.json(req.session.user);
   });
 };
