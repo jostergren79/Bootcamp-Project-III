@@ -2,7 +2,6 @@ require("dotenv").config();
 
 //
 const FormData = require("form-data");
-const axios = require("axios");
 const fetch = require("node-fetch");
 
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -22,6 +21,7 @@ module.exports = function(app) {
   });
 
   app.get("/callback", (req, res) => {
+    // if we get no code back from discord through an error
     if (!req.query.code) {
       return res.status(400).send({
         status: "ERROR",
@@ -29,6 +29,8 @@ module.exports = function(app) {
       });
     }
     const accessCode = req.query.code;
+
+    // set the data to form data as that is what discords Oath2 docs say that are required to use this endpoint
     const data = new FormData();
     data.append("client_id", CLIENT_ID);
     data.append("client_secret", CLIENT_SECRET);
@@ -40,25 +42,27 @@ module.exports = function(app) {
     let User;
     let authorization;
 
+    // do a post to get the token
     fetch("https://discordapp.com/api/oauth2/token", {
       method: "POST",
       body: data
     })
-      .then(r => r.json())
+      .then(r => r.json()) // magic
       .then(response => {
-        console.log(response);
+        // create the authorization header
         authorization = `${response.token_type} ${response.access_token}`;
         fetch("https://discordapp.com/api/users/@me", {
           method: "GET",
           headers: {
-            authorization: `${response.token_type} ${response.access_token}`
+            authorization
           }
         })
-          .then(r => r.json())
+          .then(r => r.json()) // magic
           .then(userResponse => {
-            console.log(userResponse);
-            console.log(authorization);
+            //start building the user object to store in this session
             User = userResponse;
+            User.tokenRes = response;
+            User.authorization = `${response.token_type} ${response.access_token}`;
             User.tag = `${userResponse.username}#${userResponse.discriminator}`;
             User.avatarURL = userResponse.avatar
               ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024`
@@ -67,15 +71,18 @@ module.exports = function(app) {
             fetch("https://discordapp.com/api/users/@me/guilds", {
               method: "GET",
               headers: {
-                authorization: authorization
+                authorization
               }
             })
               .then(r => r.json())
               .then(guildResponse => {
-                console.log(guildResponse);
+                // initalize empty arrays to store the guilds in
                 User.guilds = [];
                 User.guildsManage = [];
+
+                // loop through the guilds to get permission levels and iconURL's
                 for (let i = 0; i < guildResponse.length; i++) {
+                  //get iconURL weather it be custom or default
                   if (guildResponse[i].icon === null) {
                     guildResponse[
                       i
@@ -85,82 +92,36 @@ module.exports = function(app) {
                       i
                     ].iconURL = `https://cdn.discordapp.com/icons/${guildResponse[i].id}/${guildResponse[i].icon}.jpg`;
                   }
-                  let perm = (guildResponse[i].permissions & 0x8) !== 0;
-                  let manage = (guildResponse[i].permissions & 0x20) !== 0; // 0x20 = MANAGGE_GUILD
+                  //check the user permission level for the server to check if they have MANAGE_GUILD or ADMINISTRATOR
+                  let perm = (guildResponse[i].permissions & 0x8) !== 0; // 0x8 = ADMINISTRATOR
+                  let manage = (guildResponse[i].permissions & 0x20) !== 0; // 0x20 = MANAGE_GUILD
+
+                  //if the user has either permission put the guild data in the given array other wise dont save it because the user cant do anything with it anyway
                   if (perm === true) {
                     User.guilds.push(guildResponse[i]);
                   } else if (manage === true) {
                     User.guildsManage.push(guildResponse[i]);
                   }
+
+                  //if the loop is complete bind the session and redirect them to the appropriate endpoint to use the dashboard for temp "/servers"
                   if (i + 1 === guildResponse.length) {
-                    req.session.user = userResponse;
+                    req.session.user = User;
                     res.redirect("/servers");
                   }
                 }
-                //User.guilds = guildResponse;
               });
           });
       });
-
-    // axios.post("https://discordapp.com/api/oauth2/token", {
-    //     headers: {
-    //       'Content-Type': 'application/x-www-form-urlencoded'
-    //     },
-    //     body: data
-    //   })
-    //   .then(tokenResponse => {
-    //     authorization = `${tokenResponse.token_type} ${tokenResponse.access_token}`;
-    // axios
-    //   .get("https://discordapp.com/api/users/@me", {
-    //     headers: {
-    //       authorization
-    //     }
-    //   })
-    //   .then(userResponse => {
-    //     User = userResponse;
-    //     User.tag = `${userResponse.username}#${userResponse.discriminator}`;
-    //     User.avatarURL = userResponse.avatar
-    //       ? `https://cdn.discordapp.com/avatars/${userResponse.id}/${userResponse.avatar}.png?size=1024`
-    //       : null;
-    //     axios
-    //       .get("https://discordapp.com/api/users/@me/guilds", {
-    //         headers: {
-    //           authorization
-    //         }
-    //       })
-    //       .then(guildResponse => {
-    //         User.guilds = [];
-    //         User.guildsManage = [];
-    //         let count = [];
-    //         for (let i = 0; i < guildResponse.length; i++) {
-    //           count.push(true);
-    //           if (guildResponse[i].icon === null) {
-    //             guildResponse[
-    //               i
-    //             ].iconURL = `https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png`;
-    //           } else {
-    //             guildResponse[
-    //               i
-    //             ].iconURL = `https://cdn.discordapp.com/icons/${guildResponse[i].id}/${guildResponse[i].icon}.jpg`;
-    //           }
-    //           let perm = (guildResponse[i].permissions & 0x8) !== 0;
-    //           let manage = (guildResponse[i].permissions & 0x20) !== 0; // 0x20 = MANAGE_GUILD
-    //           if (perm === true) {
-    //             User.guilds.push(guildResponse[i]);
-    //           } else if (manage === true) {
-    //             User.guildsManage.push(guildResponse[i]);
-    //           }
-    //           if (i + 1 === guildResponse.length) {
-    //             req.session.user = userResponse;
-    //             res.redirect("/servers");
-    //           }
-    //         }
-    //       });
-    //   });
   });
-  // });
 
   app.get("/servers", (req, res) => {
-    res.json(req.session.user);
+    //if we dont have a session for the user then give Unauthorized
+    if (!req.session.user) {
+      return res.status(401).send({
+        status: "ERROR",
+        error: "Unauthorized"
+      });
+    }
+    res.json(req.session);
   });
 };
