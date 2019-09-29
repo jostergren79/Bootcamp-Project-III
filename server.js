@@ -1,16 +1,28 @@
 require("dotenv").config();
-var express = require("express");
-var exphbs = require("express-handlebars");
+let express = require("express");
+let exphbs = require("express-handlebars");
+const session = require("express-session");
 
-var db = require("./models");
+let db = require("./models");
 
-var app = express();
-var PORT = process.env.PORT || 3000;
+let app = express();
+let PORT = process.env.PORT || 3000;
+let SECRET = process.env.SESSION_SECRET;
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
+
+// store the session data
+app.use(
+  session({
+    secret: SECRET,
+    resave: false,
+    saveUninitialized: false,
+    expires: 604800000
+  })
+);
 
 // Handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -18,6 +30,7 @@ app.set("view engine", "handlebars");
 
 // Routes
 require("./routes/apiRoutes")(app);
+require("./routes/discordRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
 var syncOptions = { force: false };
@@ -32,7 +45,7 @@ if (process.env.NODE_ENV === "test") {
 db.sequelize.sync(syncOptions).then(function() {
   app.listen(PORT, function() {
     console.log(
-      "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
+      "==> 🌎  Listening on port %s. Visit http://localhost:%s/login in your browser.",
       PORT,
       PORT
     );
