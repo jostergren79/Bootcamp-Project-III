@@ -22,7 +22,7 @@ module.exports = {
       .addField("User", actionUser.user.username)
       .addField("Staff", message.author.username)
       .addField("type", "warn")
-      .addField("message", args.join(" ") || " ");
+      .addField("message", args.join(" ") || "No Reason Given");
     message.channel.send(embed);
     if (serverProfile.modLogs !== "")
       message.guild.channels
