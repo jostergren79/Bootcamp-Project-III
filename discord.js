@@ -25,7 +25,7 @@ fs.readdir("./discordEvents", (err, files) => {
     let eventFunction = require(`./discordEvents/${file}`);
     let eventName = file.split(".")[0];
     console.log(`Loading Event: ${eventName}. 👌`);
-    bot.on(eventName, (...args) => eventFunction.run(bot, ...args));
+    bot.on(eventName, (...args) => eventFunction.run(bot, db, ...args));
   });
 });
 
