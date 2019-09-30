@@ -1,9 +1,9 @@
-# Coding BootCamp Project II 
+## Coding BootCamp Project II 
 
 ### Description 
 
 * Our project utilizes a Node and Express Web Server Application to moderate a Discord server
-* The purpose of our bot is to provide a tool that incorporates fun into user moderation
+* The purpose of our bot is to provide a tool that incorporates fun into user moderationf for discord
 * Our bot is unique in that you can order food directly from Discord in addition to moderating users
 
 ### Technologies Employed 
@@ -16,7 +16,7 @@
 
 ### Deployed using Heroku 
 
-* HTTPS://.........
+* https://discordbotforbc.herokuapp.com/
 
 ### Team: 
 

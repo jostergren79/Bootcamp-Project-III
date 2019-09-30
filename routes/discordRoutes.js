@@ -106,7 +106,7 @@ module.exports = function(app) {
                   //if the loop is complete bind the session and redirect them to the appropriate endpoint to use the dashboard for temp "/servers"
                   if (i + 1 === guildResponse.length) {
                     req.session.user = User;
-                    res.redirect("/servers");
+                    res.redirect("/dashboard");
                   }
                 }
               });
@@ -114,14 +114,14 @@ module.exports = function(app) {
       });
   });
 
-  app.get("/servers", (req, res) => {
-    //if we dont have a session for the user then give Unauthorized
-    if (!req.session.user) {
-      return res.status(401).send({
-        status: "ERROR",
-        error: "Unauthorized"
-      });
-    }
-    res.json(req.session);
-  });
+  // app.get("/servers", (req, res) => {
+  //   //if we dont have a session for the user then give Unauthorized
+  //   if (!req.session.user) {
+  //     return res.status(401).send({
+  //       status: "ERROR",
+  //       error: "Unauthorized"
+  //     });
+  //   }
+  //   res.json(req.session);
+  // });
 };
