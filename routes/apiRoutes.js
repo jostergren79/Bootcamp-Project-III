@@ -1,24 +1,37 @@
 var db = require("../models");
 
 module.exports = function(app) {
-  // app.delete("/api/examples/:id", function(req, res) {
-  //   db.Example.destroy({ where: { id: req.params.id } }).then(function(
-  //     dbExample
-  //   ) {
-  //     res.json(dbExample);
-  //   });
-  // });
-
-  app.get("/api/infractions", function(req, res) {
-    if (!req.session.user) {
-      return res.status(401).send({
-        status: "ERROR",
-        error: "Unauthorized"
+  app.post("/api/settings", function(req, res) {
+    console.log(JSON.stringify(req.body, null, 4));
+    db.serverProfiles
+      .update(
+        {
+          prefix: req.body.prefix,
+          logsChannel: req.body.serverLogs,
+          modLogs: req.body.modLogs
+        },
+        {
+          where: {
+            guildID: "627156913028857866"
+          }
+        }
+      )
+      .then(() => {
+        res.json({ message: "success" });
       });
-    }
+  });
+
+  app.post("/api/infractions", function(req, res) {
+    // if (!req.session.user) {
+    //   return res.status(401).send({
+    //     status: "ERROR",
+    //     error: "Unauthorized"
+    //   });
+    // }
+    console.log(req.body);
     db.Infractions.findAll({
       where: {
-        authorId: req.body.id
+        userID: req.body.userID
       }
     }).then(function(results) {
       res.json(results);

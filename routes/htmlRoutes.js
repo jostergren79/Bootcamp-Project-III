@@ -3,25 +3,41 @@ const fetch = require("node-fetch");
 
 module.exports = function(app) {
   // Load index page
-  app.get("/", function(req, res) {
-    res.sendfile();
-    // db.Example.findAll({}).then(function(dbExamples) {
-    //   res.render("index", {
-    //     msg: "Welcome!",
-    //     examples: dbExamples
-    //   });
-    // });
+  app.get("/settings", function(req, res) {
+    if (!req.session.user) {
+      return res.status(401).send({
+        status: "ERROR",
+        error: "Unauthorized"
+      });
+    }
+    db.serverProfiles
+      .findOne({
+        where: {
+          guildID: "627156913028857866"
+        }
+      })
+      .then(function(settings) {
+        console.log(settings.guildID);
+        res.render("settings", {
+          title: "guild settings",
+          prefix: settings.prefix,
+          logsChannel: settings.logsChannel,
+          modLogs: settings.modLogs
+        });
+      });
   });
 
-  // Load example page and pass in an example by id
-  app.get("/example/:id", function(req, res) {
-    // db.Example.findOne({ where: { id: req.params.id } }).then(function(
-    //   dbExample
-    // ) {
-    //   res.render("example", {
-    //     example: dbExample
-    //   });
-    // });
+  // Load index page
+  app.get("/infractions", function(req, res) {
+    if (!req.session.user) {
+      return res.status(401).send({
+        status: "ERROR",
+        error: "Unauthorized"
+      });
+    }
+    res.render("infractions", {
+      title: "infractions"
+    });
   });
 
   // Render 404 page for any unmatched routes
@@ -35,7 +51,9 @@ module.exports = function(app) {
       .then(data => {
         const results = data.data[0].embed_url;
 
-        res.render("404", { gif: results });
+        res.render("404", {
+          gif: results
+        });
       })
       .catch(err => {
         // Do something for an error here

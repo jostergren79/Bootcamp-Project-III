@@ -43,7 +43,9 @@ bot.on("message", async message => {
   if (!message.member)
     message.member = await message.guild.fetchMember(message.author);
   let serverProfile = await db.serverProfiles.findOne({
-    guildID: message.guild.id
+    where: {
+      guildID: message.guild.id
+    }
   });
   if (serverProfile === null) {
     await db.serverProfiles.create({
