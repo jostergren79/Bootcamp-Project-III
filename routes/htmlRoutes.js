@@ -46,6 +46,7 @@ module.exports = function(app) {
         }
       })
       .then(function(logs) {
+        logs.sort((a, b) => b.id - a.id);
         res.render("logs", {
           title: "logs",
           logs
