@@ -1,55 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
+<header>
+  <nav id="navbar">
+    <div class="container">
+      <h1><a href="index.html">Green Lantern Corps Discord Bot</a></h1>
+      <ul>
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="/logs">Server Logs</a></li>
+        <li><a class="current" href="/infractions">Infractions</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Green Lantern Corps Discord Bot Dashboard</title>
-  <link rel="stylesheet" href="./style.css">
-</head>
+  <div id="showcase">
+    <div class="container">
+      <div class="showcase-content">
+        <form>
+          <label class="input-Words" for="prefix">Input User ID: </label><input class="textbox" name="userID"
+            id="userID" type="text" value="158722762951753728"> <input id="searchId" type="button" value="submit">
+        </form>
 
-<body>
-
-  <header>
-    <nav id="navbar">
-      <div class="container">
-        <h1><a href="index.html">Green Lantern Corps Discord Bot</a></h1>
-        <ul>
-          <li><a href="/settings">Settings</a></li>
-          <li><a href="/logs">Server Logs</a></li>
-          <li><a class="current" href="/infractions">Infractions</a></li>
-          <li><a href="/logout">Logout</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <div id="showcase">
-      <div class="container">
-        <div class="showcase-content">
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repellendus mollitia modi molestiae
-            consectetur omnis laboriosam dicta libero officiis optio.
-          </div>
-          <br>
-          <hr>
-          <br>
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repellendus mollitia modi molestiae
-            consectetur omnis laboriosam dicta libero officiis optio.
-          </div>
+        <br>
+        <div id="infractions">
+          <h1>Please enter a discord userID to continue</h1>
         </div>
+        <br>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
+  </div>
 
-  </header>
+</header>
 
-  <div class="clr"></div>
+<div class="clr"></div>
 
-  <footer id="main-footer">
-    <p>Green Lantern Corps &copy; 2019, All Rights Reserved</p>
-  </footer>
+<footer id="main-footer">
+  <p>Green Lantern Corps &copy; 2019, All Rights Reserved</p>
+</footer>
 
-</body>
-
-</html>
+<script>
+  document.getElementById("searchId").addEventListener("click", function () {
+    const infractionsDiv = document.getElementById("infractions");
+    infractionsDiv.innerHTML = ""
+    const userID = document.getElementById("userID");
+    if (userID.value === "" || userID.value.length <= 12 || userID.value.length >= 29) return displayModal("ERROR: please input a valid user id use <a style='color: #38ceff; text-decoration:underline;' href='https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-'>THESE INSTRUCTIONS</a> to obtain one")
+    axios.post("/api/infractions", { userID: userID.value }).then((data) => {
+      if (data.data.length !== 0) {
+        data.data.forEach(inf => {
+          let { id, userID, staffID, type, channelName, message, createdAt } = inf;
+          let newDiv = document.createElement("div");
+          let newBr = document.createElement("br");
+          let newBrTwo = document.createElement("br");
+          let newHr = document.createElement("hr");
+          newDiv.innerHTML = `
+        Case Number: ${id}<br>
+        Action Taken: ${type}<br>
+        User ID: ${userID}<br>
+        Staff ID: ${staffID}<br>
+        Channel: ${channelName}<br>
+        Time stamp: ${moment(createdAt).format('MMMM Do YYYY, h:mm:ss a')}<br>
+        Reason: ${message}
+        `;
+          infractionsDiv.appendChild(newDiv);
+          infractionsDiv.appendChild(newBr);
+          infractionsDiv.appendChild(newHr);
+          infractionsDiv.appendChild(newBrTwo);
+        })
+      } else {
+        infractionsDiv.innerHTML = "<h1>This user does not have any infractions</h1>";
+      }
+    })
+  })
+</script>

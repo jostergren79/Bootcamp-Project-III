@@ -3,7 +3,9 @@ const Discord = require("discord.js");
 exports.run = async (bot, db, oldVoiceChannel, newVoiceChannel) => {
   //get the server profile from the database
   let serverProfile = await db.serverProfiles.findOne({
-    guildID: oldVoiceChannel.guild.id
+    where: {
+      guildID: oldVoiceChannel.guild.id
+    }
   });
   //if the profile does not exist then make it and set a dummy one for now
   if (serverProfile === null) {
