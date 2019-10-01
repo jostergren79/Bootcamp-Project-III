@@ -14,7 +14,16 @@ module.exports = function(app) {
         }
       })
       .then(function(settings) {
-        console.log(settings.guildID);
+        if (settings === null) {
+          settings = {
+            guildID: "627156913028857866",
+            guildName: "Green Lantern",
+            prefix: "!",
+            logsChannel: "",
+            modLogs: ""
+          };
+          db.serverProfiles.create(settings);
+        }
         res.render("settings", {
           title: "guild settings",
           prefix: settings.prefix,
