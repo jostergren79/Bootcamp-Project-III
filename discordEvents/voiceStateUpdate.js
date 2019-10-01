@@ -67,7 +67,7 @@ exports.run = async (bot, db, oldVoiceChannel, newVoiceChannel) => {
     logging = `${newVoiceChannel.user.username}#${newVoiceChannel.user.discriminator} (${newVoiceChannel.user.id}) moved from ${voiceChanOld.name} (${oldVoiceChannel.voiceChannelID}) to ${voiceChanNew.name} (${newVoiceChannel.voiceChannelID})`;
   }
   //if the logs channel exists send the embed that we have created
-  if (serverProfile.modLogs !== "") {
+  if (serverProfile.logsChannel !== "") {
     bot.channels.get(serverProfile.logsChannel).send(embed);
   }
   db.serverLogs.create({
