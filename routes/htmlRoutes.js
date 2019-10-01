@@ -39,9 +39,18 @@ module.exports = function(app) {
     if (!req.session.user) {
       return res.status(401).redirect("/");
     }
-    res.render("logs", {
-      title: "logs"
-    });
+    db.serverLogs
+      .findAll({
+        where: {
+          guildID: "627156913028857866"
+        }
+      })
+      .then(function(logs) {
+        res.render("logs", {
+          title: "logs",
+          logs
+        });
+      });
   });
 
   // Render 404 page for any unmatched routes

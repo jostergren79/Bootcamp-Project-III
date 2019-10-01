@@ -27,17 +27,11 @@
     <div id="showcase">
       <div class="container">
         <div class="showcase-content">
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repellendus mollitia modi molestiae
-            consectetur omnis laboriosam dicta libero officiis optio.
-          </div>
+          {{#each logs}}
+          <div>{{message}}</div>
           <br>
           <hr>
-          <br>
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repellendus mollitia modi molestiae
-            consectetur omnis laboriosam dicta libero officiis optio.
-          </div>
+          {{/each}}   
         </div>
       </div>
     </div>
