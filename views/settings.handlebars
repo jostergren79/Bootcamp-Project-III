@@ -55,8 +55,17 @@
 
   function postData(dataObj) {
     axios.post("/api/settings", dataObj).then(() => {
+      displayModal("Settings saved successfully!")
+
+      
 
     })
+    .catch(() => {
+      displayModal("error on authorize - user not logged in")
+
+    })  
   }
   
+
+
 </script>

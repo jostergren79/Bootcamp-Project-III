@@ -116,10 +116,7 @@ module.exports = function(app) {
 
   app.get("/logout", (req, res) => {
     if (!req.session.user) {
-      return res.status(401).send({
-        status: "ERROR",
-        error: "Unauthorized"
-      });
+      return res.status(401).redirect("/");
     }
     req.session.destroy();
     res.redirect("/");
