@@ -23,7 +23,9 @@ module.exports = function(app) {
         }
       )
       .then(() => {
-        res.json({ message: "success" });
+        res.json({
+          message: "success"
+        });
       });
   });
 
@@ -40,43 +42,8 @@ module.exports = function(app) {
         userID: req.params.id
       }
     }).then(function(results) {
+      results.sort((a, b) => b.id - a.id);
       res.json(results);
     });
-  });
-
-  app.get("/api/logs", function(req, res) {
-    if (!req.session.user) {
-      return res.status(401).send({
-        status: "ERROR",
-        error: "Unauthorized"
-      });
-    }
-    db.serverLogs
-      .findAll({
-        where: {
-          authorLogs: req.body.id
-        }
-      })
-      .then(function(results) {
-        res.json(results);
-      });
-  });
-
-  app.get("/api/logs", function(req, res) {
-    if (!req.session.user) {
-      return res.status(401).send({
-        status: "ERROR",
-        error: "Unauthorized"
-      });
-    }
-    db.serverLogs
-      .findAll({
-        where: {
-          authorLogs: req.body.id
-        }
-      })
-      .then(function(results) {
-        res.json(results.data);
-      });
   });
 };
