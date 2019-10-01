@@ -5,10 +5,7 @@ module.exports = function(app) {
   // Load index page
   app.get("/settings", function(req, res) {
     if (!req.session.user) {
-      return res.status(401).send({
-        status: "ERROR",
-        error: "Unauthorized"
-      });
+      return res.status(401).redirect("/");
     }
     db.serverProfiles
       .findOne({
@@ -27,16 +24,23 @@ module.exports = function(app) {
       });
   });
 
-  // Load index page
+  // Load infractions page
   app.get("/infractions", function(req, res) {
     if (!req.session.user) {
-      return res.status(401).send({
-        status: "ERROR",
-        error: "Unauthorized"
-      });
+      return res.status(401).redirect("/");
     }
     res.render("infractions", {
       title: "infractions"
+    });
+  });
+
+  // Load index page
+  app.get("/logs", function(req, res) {
+    if (!req.session.user) {
+      return res.status(401).redirect("/");
+    }
+    res.render("logs", {
+      title: "logs"
     });
   });
 

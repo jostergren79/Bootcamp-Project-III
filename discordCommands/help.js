@@ -15,19 +15,19 @@ module.exports = {
       )
       .addField(
         "warn",
-        `!warn < @user || userID > message to be saved/logged here`
+        `${serverProfile.prefix}warn < @user || userID > message to be saved/logged here`
       )
       .addField(
         "ban",
-        `!ban < @user || userID > message to be saved/logged here`
+        `${serverProfile.prefix}ban < @user || userID > message to be saved/logged here`
       )
       .addField(
         "mute",
-        `!mute < @user || userID > message to be saved/logged here`
+        `${serverProfile.prefix}mute < @user || userID > message to be saved/logged here`
       )
       .addField(
         "kick",
-        `!kick < @user || userID > message to be saved/logged here`
+        `${serverProfile.prefix}kick < @user || userID > message to be saved/logged here`
       );
     message.channel.send(embed);
   }
