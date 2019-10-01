@@ -45,7 +45,7 @@
     infractionsDiv.innerHTML = ""
     const userID = document.getElementById("userID");
     if (userID.value === "" || userID.value.length <= 12 || userID.value.length >= 29) return displayModal("ERROR: please input a valid user id use <a style='color: #38ceff; text-decoration:underline;' href='https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-'>THESE INSTRUCTIONS</a> to obtain one")
-    axios.post("/api/infractions", { userID: userID.value }).then((data) => {
+    axios.get(`/api/infractions/${userID.value}`).then((data) => {
       if (data.data.length !== 0) {
         data.data.forEach(inf => {
           let { id, userID, staffID, type, channelName, message, createdAt } = inf;
@@ -70,6 +70,8 @@
       } else {
         infractionsDiv.innerHTML = "<h1>This user does not have any infractions</h1>";
       }
+    }).catch(err => {
+      infractionsDiv.innerHTML = `<h1>ERROR: You Are Not Logged In and therefore cannot view infractions</h1>`
     })
   })
 </script>

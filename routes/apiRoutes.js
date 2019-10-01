@@ -2,7 +2,13 @@ var db = require("../models");
 
 module.exports = function(app) {
   app.post("/api/settings", function(req, res) {
-    console.log(JSON.stringify(req.body, null, 4));
+    if (!req.session.user) {
+      return res.status(401).send({
+        status: "ERROR",
+        error: "Unauthorized"
+      });
+    }
+
     db.serverProfiles
       .update(
         {
@@ -21,17 +27,17 @@ module.exports = function(app) {
       });
   });
 
-  app.post("/api/infractions", function(req, res) {
-    // if (!req.session.user) {
-    //   return res.status(401).send({
-    //     status: "ERROR",
-    //     error: "Unauthorized"
-    //   });
-    // }
+  app.get("/api/infractions/:id", function(req, res) {
+    if (!req.session.user) {
+      return res.status(401).send({
+        status: "ERROR",
+        error: "Unauthorized"
+      });
+    }
     console.log(req.body);
     db.Infractions.findAll({
       where: {
-        userID: req.body.userID
+        userID: req.params.id
       }
     }).then(function(results) {
       res.json(results);
