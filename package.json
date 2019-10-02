@@ -1,5 +1,5 @@
 {
-  "name": "node-handlebars-boilerplate",
+  "name": "handlebars-boilerplate",
   "version": "1.0.0",
   "description": "Project 2 Starter",
   "main": "server.js",
@@ -43,5 +43,17 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jostergren79/CodingBootCampProjectII.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/jostergren79/CodingBootCampProjectII/issues"
+  },
+  "homepage": "https://github.com/jostergren79/CodingBootCampProjectII#readme"
 }

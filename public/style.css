@@ -6,12 +6,12 @@
 }
 
 /* Main Styling */
-html,
+
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.7em;
   height: 100%;
-  background-image: url('./logoBG.jpg') no-repeat center center/cover;
+  background: black;
 }
 
 a {
@@ -19,10 +19,17 @@ a {
   text-decoration: none;
 }
 
-h1,
-h2,
+h1 {
+  font-family: "Creepster", cursive;
+  color: white;
+}
+
+h2 {
+  color: white;
+}
 h3 {
   padding-bottom: 20px;
+  color: white;
 }
 
 p {
@@ -37,8 +44,11 @@ p {
   padding: 0 20px;
 }
 
-.text-primary {
-  color: #015726;
+.text-settings {
+  color: white;
+  font-family: "Creepster", cursive;
+  -webkit-text-stroke-color: black;
+  -webkit-text-stroke-width: 1px;
 }
 
 .lead {
@@ -46,7 +56,6 @@ p {
 }
 
 .btn {
-  font-family: ;
   display: inline-block;
   font-size: 18px;
   color: #fff;
@@ -57,7 +66,7 @@ p {
 }
 
 .btn:hover {
-  background: #015726;
+  background-color: black;
   color: #fff;
 }
 
@@ -105,9 +114,10 @@ p {
 
 /* Navbar */
 #navbar {
-  background: #222c45;
+  background: black;
   color: darkgray;
   overflow: auto;
+  padding-top: 10px;
 }
 
 #navbar a {
@@ -121,6 +131,7 @@ p {
 
 #navbar ul {
   list-style: none;
+  margin-bottom: 0px;
   float: right;
 }
 
@@ -131,18 +142,27 @@ p {
 #navbar ul li a {
   display: block;
   padding: 20px;
+  font-family: "Creepster", cursive;
+  -webkit-text-stroke-color: black;
+  -webkit-text-stroke-width: 1px;
+  font-size: 20px;
   text-align: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 #navbar ul li a:hover,
 #navbar ul li a.current {
-  background: #151e2d;
-  color: #015726;
+  background-image: url("http://hdgifs.com/wp-content/uploads/2016/10/green_goo.gif");
+  color: white;
 }
 
 /* Showcase */
 #showcase {
-  background: #151e2d;
+  background-image: url("http://hdgifs.com/wp-content/uploads/2016/10/green_goo.gif");
+  background-repeat: no-repeat;
+  background-size: 2000px 800px;
+  opacity: 0.8;
   color: #fff;
   height: 600px;
   padding-top: 20px;
@@ -153,7 +173,7 @@ p {
   position: fixed;
   width: 100%;
   text-align: center;
-  background: #192737;
+  background: black;
   color: #fff;
   padding: 20px;
   left: 0;
