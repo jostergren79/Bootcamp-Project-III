@@ -12,7 +12,6 @@
 - Incorporates Node and Express Web Server
 - Backed by MySQL database with Sequelize or ORM
 - GET and POST routes for retrieving/adding data
-- "New" Library, Package, or Technology
 
 ### Deployed using Heroku
 
