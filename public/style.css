@@ -12,6 +12,10 @@ body {
   line-height: 1.7em;
   height: 100%;
   background: black;
+  background-image: url("http://hdgifs.com/wp-content/uploads/2016/10/green_goo.gif");
+  background-repeat: no-repeat;
+  background-size: 2000px 800px;
+  background-attachment: fixed;
 }
 
 a {
@@ -28,6 +32,7 @@ h1 {
 h2 {
   color: white;
 }
+
 h3 {
   padding-bottom: 20px;
   color: white;
@@ -50,6 +55,10 @@ p {
   font-family: "Creepster", cursive;
   -webkit-text-stroke-color: black;
   -webkit-text-stroke-width: 1px;
+}
+
+.showcase-content h2 {
+  text-align: center;
 }
 
 .lead {
@@ -160,9 +169,6 @@ p {
 
 /* Showcase */
 #showcase {
-  background-image: url("http://hdgifs.com/wp-content/uploads/2016/10/green_goo.gif");
-  background-repeat: no-repeat;
-  background-size: 2000px 800px;
   opacity: 0.8;
   color: #fff;
   height: 600px;
@@ -176,7 +182,7 @@ p {
   text-align: center;
   background: black;
   color: #fff;
-  padding: 20px;
+  padding: 10px;
   left: 0;
   bottom: 0;
 }
@@ -228,4 +234,43 @@ p {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+div#infractions {
+  background: #232020;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+#infractions h1 {
+  text-align: center;
+}
+
+hr {
+  background: white;
+}
+
+.showcase-content {
+  background: #232020;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.textbox {
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#searchId {
+  margin-left: 15px;
+}
+
+img {
+  left: 25%;
+  position: absolute;
+  top: 10%;
+}
+
+form {
+  text-align: center;
 }
