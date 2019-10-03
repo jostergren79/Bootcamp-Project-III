@@ -17,6 +17,14 @@
 
 - https://discordbotforbc.herokuapp.com/
 
+### Usage
+- In discord replace PREFIX with what the dashboard says is the prefix. replace < @user || userID > with an @USER or a userid
+  - PREFIX`help` displays various commands and how to use them 
+  - PREFIX`warn < @user || userID > message to be saved/logged here`  
+  - PREFIX`ban < @user || userID > message to be saved/logged here`
+  - PREFIX`mute < @user || userID > message to be saved/logged here`
+  - PREFIX`kick < @user || userID > message to be saved/logged here`
+
 ### Team:
 
 - Project Manager: Jason Ostergren
