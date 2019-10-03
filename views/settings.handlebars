@@ -1,73 +1,70 @@
+<header>
+  <nav id="navbar">
+    <div class="container">
+      <h1><a href="index.html">Gelatinous Cube Discord Bot</a></h1>
+      <ul>
+        <li><a class="current" href="/settings">Settings</a></li>
+        <li><a href="/logs">Server Logs</a></li>
+        <li><a href="/infractions">Infractions</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<div id="showcase">
+  <div class="container">
+    <div class="showcase-content">
+      <h2><span class="text-settings">Server Settings</h2>
+      <br><br>
+      <form>
+        <label class="input-Words" for="prefix">Prefix: </label><br><input class="textbox" name="prefix" id="prefix"
+          type="text" value="{{prefix}}"><br>
+        <br>
+        <label class="input-Words" for="LogsId">Server Logs Channel ID: </label><br><input class="textbox" name="LogsId"
+          id="LogsId" type="text" value="{{logsChannel}}"><br>
+        <br>
+        <label class="input-Words" for="modLogs">Moderation Logs Channel ID: </label><br><input class="textbox"
+          name="modLogs" id="modLogs" type="text" value="{{modLogs}}"><br><br>
+        <a id="submit" class="btn">Submit</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="clr"></div>
+
+<footer id="main-footer">
+  <p>Green Lantern Corps &copy; 2019, All Rights Reserved</p>
+</footer>
+<script>
+
+  document.getElementById("submit").addEventListener("click", function () {
+    const prefix = document.getElementById("prefix");
+    if (prefix.value === "") return displayModal("ERROR: the prefix field cannot be empty!");
+    if (prefix.value.length > 1 || prefix.value.length < 1) return displayModal("ERROR: the prefix field cannot have more than one character!");
+    const serverLogs = document.getElementById("LogsId");
+    const modLogs = document.getElementById("modLogs");
+    postData({
+      prefix: prefix.value,
+      serverLogs: serverLogs.value,
+      modLogs: modLogs.value
+    })
+  })
+
+  function postData(dataObj) {
+    axios.post("/api/settings", dataObj).then(() => {
+      displayModal("Settings saved successfully!")
 
 
-    <header>
-        <nav id="navbar">
-          <div class="container">
-            <h1><a href="index.html">Gelatinous Cube Discord Bot</a></h1>
-            <ul>
-              <li><a class="current" href="/settings">Settings</a></li>
-              <li><a href="/logs">Server Logs</a></li>
-              <li><a href="/infractions">Infractions</a></li>
-              <li><a href="/logout">Logout</a></li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-      
-      <div id="showcase">
-        <div class="container">
-          <div class="showcase-content">
-            <h2><span class="text-settings">Server Settings</h2>
-            <br><br>
-            <form>
-              <label class="input-Words" for="prefix">Prefix: </label><input class="textbox" name="prefix" id="prefix"
-                type="text" value="{{prefix}}"><br>
-              <br>
-              <label class="input-Words" for="LogsId">Server Logs Channel ID: </label><br><input class="textbox" name="LogsId"
-                id="LogsId" type="text" value="{{logsChannel}}"><br>
-              <br>
-              <label class="input-Words" for="modLogs">Moderation Logs Channel ID: </label><br><input class="textbox"
-                name="modLogs" id="modLogs" type="text" value="{{modLogs}}"><br><br>
-              <a id="submit" class="btn">Submit</a>
-            </form>
-          </div>
-        </div>
-      </div>
-      
-      <div class="clr"></div>
-      
-      <footer id="main-footer">
-        <p>Green Lantern Corps &copy; 2019, All Rights Reserved</p>
-      </footer>
-      <script>
-      
-        document.getElementById("submit").addEventListener("click", function () {
-          const prefix = document.getElementById("prefix");
-          if (prefix.value === "") return displayModal("ERROR: the prefix field cannot be empty!");
-          if (prefix.value.length > 1 || prefix.value.length < 1) return displayModal("ERROR: the prefix field cannot have more than one character!");
-          const serverLogs = document.getElementById("LogsId");
-          const modLogs = document.getElementById("modLogs");
-          postData({
-            prefix: prefix.value,
-            serverLogs: serverLogs.value,
-            modLogs: modLogs.value
-          })
-        })
-      
-        function postData(dataObj) {
-          axios.post("/api/settings", dataObj).then(() => {
-            displayModal("Settings saved successfully!")
-      
-            
-      
-          })
-          .catch(() => {
-            displayModal("error on authorize - user not logged in")
-      
-          })  
-        }
-        
-      
-      
-      </script>
 
+    })
+      .catch(() => {
+        displayModal("error on authorize - user not logged in")
+
+      })
+  }
+
+
+
+</script>

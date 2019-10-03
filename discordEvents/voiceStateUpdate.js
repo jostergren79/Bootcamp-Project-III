@@ -68,7 +68,10 @@ exports.run = async (bot, db, oldVoiceChannel, newVoiceChannel) => {
   }
   //if the logs channel exists send the embed that we have created
   if (serverProfile.logsChannel !== "") {
-    bot.channels.get(serverProfile.logsChannel).send(embed);
+    //because i dont care if it errors as anyone can put anything in the box for settings
+    try {
+      bot.channels.get(serverProfile.logsChannel).send(embed);
+    } catch (err) {}
   }
   db.serverLogs.create({
     guildID: oldVoiceChannel.guild.id,
